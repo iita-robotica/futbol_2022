@@ -1,0 +1,6 @@
+[submodule "rsexamples"]
+	path = rsexamples
+	url = https://github.com/GIRA/rsexamples.git
+[submodule "rcj-soccer-sim"]
+	path = rcj-soccer-sim
+	url = https://github.com/GIRA/rcj-soccer-sim
