@@ -3,4 +3,4 @@
 	url = https://github.com/GIRA/rsexamples.git
 [submodule "rcj-soccer-sim"]
 	path = rcj-soccer-sim
-	url = https://github.com/GIRA/rcj-soccer-sim
+	url = https://github.com/iita-robotica/rcj-soccer-sim.git
