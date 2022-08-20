@@ -2,56 +2,177 @@
 from math_utils.point import Point
 from math_utils.angle import degrees
 
-# El rol "BallFollower" sigue ciegamente a la pelota.
-# ¡Ojo que podemos meter goles en contra! 
-class BallFollower:
+class Forwarder:
     def applyOn(self, robot, snapshot):
-        # Si sabemos dónde está la pelota, nos movemos hacia ella.
-        # Caso contrario, nos movemos al centro de la cancha
-        if snapshot.ball != None:
-            robot.moveToBall()
+         
+        if snapshot.color == "B":
+            equipo = 1
         else:
-            robot.moveToPoint(Point.ORIGIN)
+            equipo = -1
 
-# El rol "Goalkeeper" implementa un arquero básico
+        if snapshot.ball != None:
+            ball = snapshot.ball.position
+        else:
+            ball = Point.ORIGIN
+        
+        
+        range_b = equipo * 0.0
+
+        target = Point(ball.x, equipo * 0.35)
+        default = Point(equipo * (-0.25), equipo * (-0.25))
+
+        goal = Point(0.0, equipo * (-0.8))
+
+        x,y = 0,0
+        if robot.teamMessages:
+            x,y = max(robot.teamMessages)
+
+        distance_x = robot.getPosition().x - x
+        distance_y = robot.getPosition().y - y
+
+
+        if (equipo * y) > range_b:
+            if robot.getPosition().dist(target) < 0.01:
+                robot.lookAtAngle(degrees(90))
+            else:
+                robot.moveToPoint(target)
+
+        elif (equipo * y) <= range_b:
+            if snapshot.ball != None:
+                if distance_y < 0 and distance_x < 0.5:
+                    robot.moveToPoint(goal)
+                    if snapshot.ball != None:
+                        robot.moveToPoint(Point.ORIGIN)
+                else:
+                    robot.moveToBall()
+            else:
+                robot.moveToPoint(default)
+
+        else:
+            if snapshot.ball != None:
+                robot.moveToBall()
+            else:
+                robot.moveToPoint(default)
+
+
+class Midfielder:
+    def applyOn(self, robot, snapshot):
+        
+        if snapshot.color == "B":
+            equipo = 1
+        else:
+            equipo = -1
+
+        if snapshot.ball != None:
+            ball = snapshot.ball.position
+        else:
+            ball = Point.ORIGIN
+        
+        
+        range_b = equipo * 0.0
+
+        target = Point(ball.x, equipo * 0.0)
+
+        goal = Point(0.0, equipo * (-0.8))
+
+        x,y = 0,0
+        if robot.teamMessages:
+            x,y = max(robot.teamMessages)
+
+        distance_x = robot.getPosition().x - x
+        distance_y = robot.getPosition().y - y
+
+
+        if (equipo * y) > range_b:
+            if snapshot.ball != None:
+                if distance_y > 0 and distance_x < 0.5:
+                    robot.moveToPoint(target)
+                else:
+                    robot.moveToBall()
+            else:
+                robot.moveToPoint(Point.ORIGIN)
+
+        elif (equipo * y) <= range_b:
+            if snapshot.ball != None:
+                if distance_y < 0 and distance_x < 0.5:
+                    robot.moveToPoint(goal)
+                    if snapshot.ball != None:
+                        robot.moveToPoint(Point.ORIGIN)
+                else:
+                    robot.moveToBall()
+            else:
+                robot.moveToPoint(Point.ORIGIN)
+
+        else:
+            if snapshot.ball != None:
+                robot.moveToBall()
+            else:
+                robot.moveToPoint(Point.ORIGIN)
+            
+            
 class Goalkeeper:
     def applyOn(self, robot, snapshot):
-        # Definimos un punto objetivo en el cual queremos ubicar el robot.
-        # Este punto está dado por la coordenada X de la pelota y un valor
-        # de Y fijo (este valor está definido de forma que esté cerca del 
-        # arco pero fuera del área)
+        
+        if snapshot.color == "B":
+            equipo = 1
+        else:
+            equipo = -1
+
         if snapshot.ball != None:
             ball = snapshot.ball.position
         else:
             ball = Point.ORIGIN
 
-        # Si el robot está lo suficientemente cerca del punto objetivo, 
-        # entonces giramos para mirar a los laterales. Sino, nos movemos
-        # hacia el punto objetivo
-        target = Point(ball.x, - 0.55)
-        if robot.getPosition().dist(target) < 0.01:
-            robot.lookAtAngle(degrees(90))
-        else:
-            robot.moveToPoint(target)
 
-# Tercer rol 
-class Defender:
-    def applyOn(self, robot, snapshot):
-        # Definimos un punto objetivo en el cual queremos ubicar el robot.
-        # Este punto está dado por la coordenada X de la pelota y un valor
-        # de Y fijo (este valor está definido de forma que esté cerca del 
-        # arco pero fuera del área)
-        if snapshot.ball != None:
-            ball = snapshot.ball.position
-        else:
-            ball = Point.ORIGIN
+        range_a = equipo * 0.3
 
-        # Si el robot está lo suficientemente cerca del punto objetivo, 
-        # entonces giramos para mirar a los laterales. Sino, nos movemos
-        # hacia el punto objetivo
-        target = Point(ball.x, - 0.25)
-        if robot.getPosition().dist(target) < 0.01:
-            robot.lookAtAngle(degrees(90))
-        else:
-            robot.moveToPoint(target)
+        target = Point(ball.x, equipo * 0.55)
+
+        left_target = Point(equipo * 0.3, ball.y)
+        right_target = Point(equipo * (-0.3), ball.y)
+
+        left_corner = Point(equipo * 0.3, equipo * 0.55)
+        right_corner = Point(equipo * (-0.3), equipo * 0.55)
+
+        x,y = 0,0
+        if robot.teamMessages:
+            x,y = max(robot.teamMessages)
+
+
+        if (equipo * y) < range_a:
+            if x <= 0.35 and x >= -0.35:
+                if robot.getPosition().dist(target) < 0.01:
+                    robot.lookAtAngle(degrees(90))
+                else:
+                    robot.moveToPoint(target)
             
+            elif x > 0.35:
+                robot.moveToPoint(left_corner)
+                robot.lookAtPoint(ball)
+            
+            elif x < -0.35:
+                robot.moveToPoint(right_corner)
+                robot.lookAtPoint(ball)
+            
+            else:
+                robot.lookAtPoint(ball)
+        
+        elif (equipo * y) >= range_a:
+            if x <= 0.35 and x >= -0.35:
+                robot.moveToBall()
+
+            elif x > 0.35:
+                if robot.getPosition().dist(left_target) < 0.01:
+                    robot.lookAtAngle(degrees(90))
+                else:
+                    robot.moveToPoint(left_target)
+
+            elif x < -0.35:
+                if robot.getPosition().dist(right_target) < 0.01:
+                    robot.lookAtAngle(degrees(90))
+                else:
+                    robot.moveToPoint(right_target)
+
+        else:
+            robot.moveToPoint(Point.ORIGIN)
+   
