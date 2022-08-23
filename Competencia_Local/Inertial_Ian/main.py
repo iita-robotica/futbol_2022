@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 from rsproxy.server import Server
 from robot import Robot
-from roles import (BallFollower, Goalkeeper, Defender)
+from roles import (Forwarder, Midfielder, Goalkeeper)
 
 # La función "setup" se ejecuta cuando comienza el partido
 def setup():
     # Creamos 3 robots y asignamos sus respectivos roles
     global robots
     robots = [Robot(Goalkeeper()),
-            Robot(Defender()),
-            Robot(BallFollower())]
+            Robot(Midfielder()),
+            Robot(Forwarder())]
 
 # La función "loop" se ejecuta para cada iteración del partido.
 # En la variable "snapshot" tenemos la información de los sensores
@@ -28,3 +28,4 @@ def loop(snapshot):
 # pasado como parámetro al programa.
 server = Server(setup, loop)
 server.start()
+
