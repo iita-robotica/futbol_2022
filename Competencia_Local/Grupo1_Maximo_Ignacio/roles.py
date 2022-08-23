@@ -29,22 +29,11 @@ class Goalkeeper:
 
 # Tercer rol 
 class Defender:
-    def applyOn(self, robot, snapshot):
-        if snapshot.color == "B":
-            equipo = 1
-        else:
-            equipo = -1
-
+     def applyOn(self, robot, snapshot):
         if snapshot.ball != None:
-            ball = snapshot.ball.position
+            robot.moveToBall()
         else:
-            ball = Point.ORIGIN
-
-        target = Point(ball.x, equipo * 0.25)
-
-        if robot.getPosition().dist(target) < 0.01:
-            robot.lookAtAngle(degrees(90))
-        else:
-            robot.moveToPoint(target)
+            robot.moveToPoint(Point.ORIGIN)
+       
 
             
