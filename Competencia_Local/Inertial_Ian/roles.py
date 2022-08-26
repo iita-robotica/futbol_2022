@@ -23,9 +23,10 @@ class Forwarder:
 
         goal = Point(0.0, equipo * (-0.8))
 
-        x,y = 0,0
-        if robot.teamMessages:
-            x,y = max(robot.teamMessages)
+        x = ball.x
+        y = ball.y
+        #if robot.teamMessages:
+            #x,y = max(robot.teamMessages)
 
         distance_x = robot.getPosition().x - x
         distance_y = robot.getPosition().y - y
@@ -38,16 +39,21 @@ class Forwarder:
                 robot.moveToPoint(target)
 
         elif (equipo * y) <= range_b:
-            if snapshot.ball != None:
-                if distance_y < 0 and distance_x < 0.5:
+            if self.ball != None:
+                if distance_y < 0:
                     robot.moveToPoint(goal)
-                    if snapshot.ball != None:
-                        robot.moveToPoint(Point.ORIGIN)
                 else:
                     robot.moveToBall()
+            
+            elif self.ball == None:
+                if snapshot.ball == None:
+                        robot.moveToPoint(default)
+                else:
+                    robot.moveToBall()
+            
             else:
                 robot.moveToPoint(default)
-
+        
         else:
             if snapshot.ball != None:
                 robot.moveToBall()
@@ -178,4 +184,3 @@ class Goalkeeper:
 
         else:
             robot.moveToPoint(Point.ORIGIN)
-   
