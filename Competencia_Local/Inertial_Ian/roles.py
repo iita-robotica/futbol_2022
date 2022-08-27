@@ -136,38 +136,38 @@ class Goalkeeper:
         y = ball.y
 
 
-        if abs(y) < range_a:
+        if y < 0 and abs(y) < range_a:
             if x <= 0.35 and x >= -0.35:
                 if robot.getPosition().dist(target) < 0.01:
                     robot.lookAtAngle(degrees(90))
                 else:
                     robot.moveToPoint(target)
             
-            elif x > (equipo * 0.35):
+            elif equipo * x > 0.35:
                 robot.moveToPoint(left_corner)
                 robot.lookAtPoint(ball)
             
-            elif x < (equipo * (-0.35)):
+            elif equipo * x < -0.35:
                 robot.moveToPoint(right_corner)
                 robot.lookAtPoint(ball)
             
             else:
                 robot.lookAtPoint(ball)
         
-        elif abs(y) >= range_a:
+        elif y < 0 and abs(y) >= range_a:
             if x <= 0.35 and x >= -0.35:
                 if snapshot.ball != None:
                     robot.moveToBall()
                 else:
                     robot.moveToPoint(target)
 
-            elif x > (equipo * 0.35):
+            elif equipo * x > 0.35:
                 if robot.getPosition().dist(left_target) < 0.01:
                     robot.lookAtAngle(degrees(90))
                 else:
                     robot.moveToPoint(left_target)
 
-            elif x < (equipo * (-0.35)):
+            elif equipo * x < -0.35:
                 if robot.getPosition().dist(right_target) < 0.01:
                     robot.lookAtAngle(degrees(90))
                 else:
