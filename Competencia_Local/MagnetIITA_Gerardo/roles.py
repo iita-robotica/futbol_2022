@@ -46,12 +46,19 @@ class Defender:
         target = Point(ball.x, equipo * 0.25)
 
         if ball.y >= (-equipo) * 0.25 and ball.y < (-equipo) * 0.8:
-            robot.lookAtAngle(degrees(90), 7.5)
+            robot.lookAtAngle(degrees(90), 8.9)
             robot.moveToBall()
-            print(ball.y)
         else:
             robot.moveToPoint(target)
             if robot.getPosition().dist(target) < 0:
                 robot.lookAtAngle(degrees(90))
-
+                print(robot.getPosition())
+                if robot.getPosition().x > 0:
+                    if robot.getPosition().x >= 0.5 and (ball.y > equipo * 0.55 and ball.y < equipo * 0.25): 
+                        robot.moveToPoint(robot.getPosition().x - 0.8, robot.getPosition().y) #Consideremos cual es la distancia del eje y de la pelota respecto al eje y del defensor para detectar su proximidad con el robot.
+                        robot.lookAtAngle(equipo * degrees(180))
+                else:
+                    if robot.getPosition().x >= -0.50 and (ball.y > equipo * 0.55 and ball.y < equipo * 0.25): 
+                        robot.moveToPoint(robot.getPosition().x - 0.8, robot.getPosition().y) #Consideremos cual es la distancia del eje y de la pelota respecto al eje y del defensor para detectar su proximidad con el robot.
+                        robot.lookAtAngle(equipo * degrees(180))
             
