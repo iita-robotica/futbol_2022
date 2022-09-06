@@ -13,7 +13,6 @@ class BallFollower:
         if snapshot.ball != None:
             robot.moveToBall()
         else:
-            puntoAleatorio = Point(0, 0.1 * -(equipo))
             robot.moveToPoint(puntoAleatorio)
 
 class Goalkeeper:
