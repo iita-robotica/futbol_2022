@@ -4,10 +4,16 @@ from math_utils.angle import degrees
 
 class BallFollower:
     def applyOn(self, robot, snapshot):
+        if snapshot.color == "B":
+            equipo = 1
+        else:
+            equipo = -1
+
         if snapshot.ball != None:
             robot.moveToBall()
         else:
-            robot.moveToPoint(Point.ORIGIN)
+            masadelante=Point(0, 0.2 * -(equipo))
+            robot.moveToPoint(masadelante)
             
 class Goalkeeper:
     def applyOn(self, robot, snapshot):
@@ -29,11 +35,11 @@ class Goalkeeper:
 
 # Tercer rol 
 class Defender:
-     def applyOn(self, robot, snapshot):
+    def applyOn(self, robot, snapshot):
         if snapshot.ball != None:
             robot.moveToBall()
         else:
             robot.moveToPoint(Point.ORIGIN)
-       
+            
 
             
