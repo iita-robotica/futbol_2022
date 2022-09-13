@@ -12,7 +12,7 @@ class BallFollower:
         if snapshot.ball != None:
             robot.moveToBall()
         else:
-            masadelante=Point(0, 0.2 * -(equipo))
+            masadelante=Point(0, 0.1 * -(equipo))
             robot.moveToPoint(masadelante)
             
 class Goalkeeper:
