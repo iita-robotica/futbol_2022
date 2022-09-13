@@ -132,8 +132,9 @@ class Goalkeeper:
         left_corner = Point(equipo * 0.3, equipo * 0.55)
         right_corner = Point(equipo * (-0.3), equipo * 0.55)
 
-        x = ball.x
-        y = ball.y
+        x,y = 0,0
+        if robot.teamMessages:
+            x,y = max(robot.teamMessages)
 
 
         if y < 0 and abs(y) < range_a:
@@ -154,7 +155,7 @@ class Goalkeeper:
             else:
                 robot.lookAtPoint(ball)
         
-        elif y < 0 and abs(y) >= range_a:
+        elif abs(y) >= range_a:
             if x <= 0.35 and x >= -0.35:
                 if snapshot.ball != None:
                     robot.moveToBall()
