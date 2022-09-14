@@ -29,7 +29,7 @@ class Goalkeeper:
             ball = Point.ORIGIN
 
         target = Point(ball.x, equipo * 0.55)
-        if robot.getPosition().dist(target) < equipo * 0.01:
+        if robot.getPosition().dist(target) < equipo * 0.01: #Si el balón se encuentra dentro del rango del área no continuar hasta la colisión con pared - si es mayor al absoluto de 0.35 
             robot.lookAtAngle(degrees(90))
         else:
             robot.moveToPoint(target)
@@ -40,21 +40,3 @@ class Defender:
             equipo = 1
         else:
             equipo = -1
-
-        if snapshot.ball != None:
-            ball = snapshot.ball.position
-        else:
-            ball = Point.ORIGIN
-
-        target = Point(ball.x, equipo * 0.25)
-        print(f'{abs(ball.y)} >= 0.25 and {abs(ball.y)} < 0.8')
-        if abs(ball.y) >= 0.25 and abs(ball.y) < 0.8:
-            robot.lookAtAngle(degrees(90), 8.9)
-            robot.moveToBall()
-        else:
-            robot.moveToPoint(target)
-            if robot.getPosition().dist(target) <= 0.01:
-                robot.lookAtAngle(degrees(90))
-                if (ball.y < -0.6 or ball.y > -0.6) and (ball.y >= equipo * 0.25):
-                    robot.lookAtAngle(degrees(equipo*45))
-                    robot.lookAtAngle(degrees(equipo * -45))
