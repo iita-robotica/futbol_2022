@@ -12,8 +12,8 @@ class BallFollower:
         if snapshot.ball != None:
             robot.moveToBall()
         else:
-            masadelante=Point(0, 0.1 * -(equipo))
-            robot.moveToPoint(masadelante)
+            masadelanteA=Point(0.35, 0.20 * -(equipo))
+            robot.moveToPoint(masadelanteA)
             
 class Goalkeeper:
     def applyOn(self, robot, snapshot):
@@ -36,10 +36,16 @@ class Goalkeeper:
 # Tercer rol 
 class Defender:
     def applyOn(self, robot, snapshot):
+        if snapshot.color == "B":
+            equipo = 1
+        else:
+            equipo = -1
         if snapshot.ball != None:
             robot.moveToBall()
         else:
-            robot.moveToPoint(Point.ORIGIN)
+            masadelanteB=Point(-0.35, 0.20 * -(equipo))
+            robot.moveToPoint(masadelanteB)
+            #robot.moveToPoint(Point.ORIGIN)
             
 
             
