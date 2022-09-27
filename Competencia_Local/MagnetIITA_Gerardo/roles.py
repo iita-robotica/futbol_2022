@@ -51,3 +51,19 @@ class Defender:
             equipo = 1
         else:
             equipo = -1
+
+        if snapshot.ball != None:
+            ball = snapshot.ball.position
+        else:
+            ball = Point.ORIGIN
+
+        target = Point(ball.x, equipo * 0.25)
+
+        if ball.y >= (-equipo) * 0.25 and ball.y < (-equipo) * 0.8:
+            robot.lookAtAngle(degrees(90), 7.5)
+            robot.moveToBall()
+            print(ball.y)
+        else:
+            robot.moveToPoint(target)
+            if robot.getPosition().dist(target) < 0:
+                robot.lookAtAngle(degrees(90))
