@@ -10,10 +10,33 @@ class BallFollower:
             equipo = -1
 
         if snapshot.ball != None:
-            robot.moveToBall()
+            ball = snapshot.ball.position
+            if ball.x < 0:
+                offset = Point(0.05, 0.0 )
+                robot.moveToBall(offset)
+            #robot.moveToBall()
+            else:
+                offset = Point(-0.05, 0.0 )
+                robot.moveToBall(offset)
         else:
+            ball = Point.ORIGIN
             masadelanteA=Point(0.35, 0.20 * -(equipo))
             robot.moveToPoint(masadelanteA)
+   
+        
+        """if snapshot.ball != None:
+            offset = Point(0.05, 0.0 )
+            robot.moveToBall(offset)
+            #robot.moveToBall()
+        elif snapshot.ball != x2:
+            offset = Point(-0.05, 0.0 )
+            robot.moveToBall(offset)"""
+
+
+            #robot.moveToBall()
+        #else:
+            #masadelanteA=Point(0.35, 0.20 * -(equipo))
+            #robot.moveToPoint(masadelanteA)
             
 class Goalkeeper:
     def applyOn(self, robot, snapshot):
@@ -41,7 +64,9 @@ class Defender:
         else:
             equipo = -1
         if snapshot.ball != None:
-            robot.moveToBall()
+            offset = Point(0.05, 0.0 )
+            robot.moveToBall(offset)
+            #robot.moveToBall()
         else:
             masadelanteB=Point(-0.35, 0.20 * -(equipo))
             robot.moveToPoint(masadelanteB)
