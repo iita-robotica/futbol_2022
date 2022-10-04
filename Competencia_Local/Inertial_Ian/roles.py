@@ -19,40 +19,29 @@ class Forwarder:
         
         range_b = 0.0
 
-        target = Point(ball.x, 0)
-        default = Point(-0.25, equipo * (-0.25))
-
         goal = Point(0.0, equipo * (-0.8))
 
-        x = ball.x
-        y = ball.y
-
-        distance_x = robot.getPosition().x - x
-        distance_y = robot.getPosition().y - y
+        distance_y = robot.getPosition().y - ball.y
 
 
-        if (equipo * y) > range_b:
-            if robot.getPosition().dist(target) < 0.01:
-                robot.lookAtAngle(degrees(90))
-            else:
-                robot.moveToPoint(Point.ORIGIN)
+        if snapshot.ball != None:
 
-        elif (equipo * y) <= range_b:
-            if snapshot.ball != None:
-                if 0 < distance_y <= 0.15:
-                    robot.moveToPoint(goal)
-                    if snapshot.ball != None:
-                        robot.moveToPoint(default)
+            if (equipo * ball.y) > range_b:
+                if distance_y <= 0.15:
+                    robot.lookAtPoint(goal)
+                    robot.moveToBall()
                 else:
                     robot.moveToBall()
-            else:
-                robot.moveToPoint(default)
-
+            elif (equipo * ball.y) <= range_b:
+                if distance_y <= 0.15:
+                    robot.moveToBall()
+                elif distance_y > 0.15:
+                    robot.moveToPoint(Point.ORIGIN)
+                    robot.lookAtPoint(ball)
+        
         else:
-            if snapshot.ball != None:
-                robot.moveToBall()
-            else:
-                robot.moveToPoint(default)
+            robot.moveToPoint(Point.ORIGIN)
+
 
 
 class Midfielder:
@@ -85,15 +74,15 @@ class Midfielder:
             elif (equipo * ball.y) < 0:
                 target = Point(ball.x + 0.2, equipo * 0.4)
 
-            if (equipo * ball.y) <= range_b:
+            if (equipo * ball.y) > range_b:
                 if robot.getPosition().dist(target) < 0.01:
                     robot.lookAtAngle(degrees(90))
                 else:
                     robot.moveToPoint(target)
-            elif (equipo * ball.y) > range_b:
-                if distance_y <= 0.15:
+            elif (equipo * ball.y) <= range_b:
+                if distance_y <= 0.3:
                     robot.moveToBall()
-                elif distance_y > 0.15:
+                elif distance_y > 0.3:
                     if robot.getPosition().dist(target) < 0.01:
                         robot.lookAtAngle(degrees(90))
                     else:
@@ -102,7 +91,7 @@ class Midfielder:
                 robot.moveToPoint(default)
         
         else:
-            robot.moveToPoint(Point.ORIGIN)
+            robot.moveToPoint(default)
             
 
 
