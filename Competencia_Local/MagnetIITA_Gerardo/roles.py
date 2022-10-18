@@ -61,8 +61,8 @@ class Defender:
 
         if ball.y >= (-equipo) * 0.25 and ball.y < (-equipo) * 0.8:
             robot.lookAtAngle(degrees(90), 7.5)
-            robot.moveToBall()
-            print(ball.y)
+            offset = Point((-equipo) * 0.12, 0.0)
+            robot.moveToBall(offset)
         else:
             robot.moveToPoint(target)
             if robot.getPosition().dist(target) < 0:
