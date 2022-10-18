@@ -9,19 +9,32 @@ class BallFollower:
         else:
             equipo = -1
 
+        
+
         if snapshot.ball != None:
             ball = snapshot.ball.position
             if ball.x < 0:
                 offset = Point(0.05, 0.0 )
                 robot.moveToBall(offset)
             #robot.moveToBall()
+                if ball.y < 0.33* -(equipo):
+                    offset = Point(-0.01, 0.0 )
+                    robot.moveToBall(offset)
+                    print("giro")
             else:
                 offset = Point(-0.05, 0.0 )
                 robot.moveToBall(offset)
+                if ball.y < 0.33* -(equipo):
+                    offset = Point(0.01, 0.0 )
+                    robot.moveToBall(offset)
         else:
             ball = Point.ORIGIN
             masadelanteA=Point(0.35, 0.20 * -(equipo))
-            robot.moveToPoint(masadelanteA)
+            if masadelanteA == robot.getPosition():
+                robot.lookAtBall()
+                print("lookAtBallDELANTERO")
+            else:
+                robot.moveToPoint(masadelanteA)
    
         
         """if snapshot.ball != None:
@@ -64,13 +77,29 @@ class Defender:
         else:
             equipo = -1
         if snapshot.ball != None:
-            offset = Point(0.05, 0.0 )
-            robot.moveToBall(offset)
+            ball = snapshot.ball.position
+            if ball.x < 0:
+                offset = Point(0.05, 0.0 )
+                robot.moveToBall(offset)
+            #robot.moveToBall()
+                if ball.y < 0.33* -(equipo):
+                    offset = Point(-0.01, 0.0 )
+                    robot.moveToBall(offset)  
+                    print("girodefensor")
+            else:
+                offset = Point(-0.05, 0.0 )
+                robot.moveToBall(offset)
+                if ball.y < 0.33* -(equipo):
+                    offset = Point(0.01, 0.0 )
+                    robot.moveToBall(offset)
+            
             #robot.moveToBall()
         else:
+            ball = Point.ORIGIN
             masadelanteB=Point(-0.35, 0.20 * -(equipo))
-            robot.moveToPoint(masadelanteB)
+            if masadelanteB == robot.getPosition():
+                robot.lookAtBall()
+                print("lookAtBallDEFENSOR")
+            else:
+                robot.moveToPoint(masadelanteB)
             #robot.moveToPoint(Point.ORIGIN)
-            
-
-            
