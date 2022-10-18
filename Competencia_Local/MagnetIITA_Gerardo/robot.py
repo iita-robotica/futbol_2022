@@ -114,8 +114,11 @@ class Robot:
 
     # Modifica la velocidad de los motores de forma que el robot se acerque a 
     # la pelota. Tiene en cuenta la simetría del robot.
-    def moveToBall(self):
-        self.moveToPoint(self.snapshot.ball.position)
+    def moveToBall(self, offset=Point(0.0 , 0.0)):
+        new_target = Point(0.0 , 0.0)
+        new_target.x = self.snapshot.ball.position.x + offset.x
+        new_target.y = self.snapshot.ball.position.y + offset.y
+        self.moveToPoint(new_target)
 
     # El método "run" implementa la lógica de comportamiento del robot
     def run(self):
