@@ -25,18 +25,14 @@ class Forwarder:
 
             if (equipo * ball.y) <= range_b:
                 if (distance_y < range_b) and (abs(distance_y) <= 0.25) and (abs(distance_x) <= 0.1):
-                    print("yendo al gol")
                     robot.moveToPoint(goal)
                 else:
-                    print("acercandome a la pelota")
                     robot.moveToBall()
             
             else:
                 if (equipo * ball.y < equipo * 0.3) and (equipo * distance_y <= 0.25) and (equipo * distance_x <= 0.1):
-                    print("asegurando la pelota")
                     robot.moveToBall()
                 else:
-                    print("esperando")
                     if robot.getPosition() == Point.ORIGIN:
                         robot.lookAtPoint(ball)
                     else:
