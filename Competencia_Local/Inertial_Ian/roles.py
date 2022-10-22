@@ -24,15 +24,19 @@ class Forwarder:
             distance_x = robot.getPosition().x - ball.x
 
             if (equipo * ball.y) <= range_b:
-                if equipo * distance_y <= 0.1 and equipo * distance_x <= 0.1:
+                if (distance_y < range_b) and (abs(distance_y) <= 0.25) and (abs(distance_x) <= 0.1):
+                    print("yendo al gol")
                     robot.moveToPoint(goal)
                 else:
+                    print("acercandome a la pelota")
                     robot.moveToBall()
             
             else:
-                if equipo * distance_y <= 0.1 and equipo * distance_x <= 0.1:
+                if (equipo * ball.y < equipo * 0.3) and (equipo * distance_y <= 0.25) and (equipo * distance_x <= 0.1):
+                    print("asegurando la pelota")
                     robot.moveToBall()
                 else:
+                    print("esperando")
                     if robot.getPosition() == Point.ORIGIN:
                         robot.lookAtPoint(ball)
                     else:
@@ -54,7 +58,7 @@ class Midfielder:
 
         range_b = 0.0
 
-        default = Point(equipo * 0.4, equipo * 0.4)
+        default = Point(equipo * 0.4, equipo * 0.3)
         
 
         if snapshot.ball != None:
@@ -99,7 +103,7 @@ class Goalkeeper:
             equipo = -1
 
 
-        range_a = 0.3
+        range_a = equipo * 0.3
 
         default = Point(0, equipo * 0.55)
         
@@ -116,48 +120,50 @@ class Goalkeeper:
             right_target = Point(equipo * (-0.3), ball.y)
 
 
-            if ball.y < 0 and ball.y < range_a:
-                #print("caso 1: pelota lejos de mi arco")
-                if ball.x <= 0.35 and ball.x >= -0.35:
-                    #print("caso 1,1: pelota en el margen del área")
+            if (equipo == 1 and ball.y < range_a) or (equipo == -1 and ball.y > range_a):
+              
+                if (equipo * ball.y) < 0:
                     if robot.getPosition().dist(target) < 0.01:
-                        robot.lookAtAngle(degrees(90))
+                            robot.lookAtAngle(degrees(90))
                     else:
                         robot.moveToPoint(target)
-                
-                elif equipo * ball.x > 0.35:
-                    #print("caso 1,2: pelota a la izquierda del margen del área")
-                    if robot.getPosition().dist(left_corner) < 0.01:
-                        robot.lookAtPoint(ball)
-                    else:
-                        robot.moveToPoint(left_corner)
-                
+
                 else:
-                    #print("caso 1,3: pelota a la derecha del margen del área")
-                    if robot.getPosition().dist(right_corner) < 0.01:
-                        robot.lookAtPoint(ball)
+
+                    if ball.x <= 0.35 and ball.x >= -0.35:
+                        if robot.getPosition().dist(target) < 0.01:
+                            robot.lookAtAngle(degrees(90))
+                        else:
+                            robot.moveToPoint(target)
+                    
+                    elif equipo * ball.x > 0.35:
+                        if robot.getPosition().dist(left_corner) < 0.01:
+                            robot.lookAtPoint(ball)
+                        else:
+                            robot.moveToPoint(left_corner)
+                    
                     else:
-                        robot.moveToPoint(right_corner)
+                        if robot.getPosition().dist(right_corner) < 0.01:
+                            robot.lookAtPoint(ball)
+                        else:
+                            robot.moveToPoint(right_corner)
                 
             
             else:
-                #print("caso 2: pelota cerca de mi arco")
+
                 if ball.x <= 0.35 and ball.x >= -0.35:
-                    #print("caso 2,1: pelota en el margen del área")
-                    if robot.getPosition().dist(ball) < 0.01:
+                    if ((equipo * robot.getPosition().y) <= (equipo * 0.5)) and (robot.getPosition().dist(ball) < 0.02):
                         robot.moveToBall()
                     else:
                         robot.moveToPoint(target)
 
                 elif equipo * ball.x > 0.35:
-                    #print("caso 2,2: pelota a la izquierda del margen del área")
                     if robot.getPosition().dist(left_target) < 0.01:
                         robot.lookAtAngle(degrees(90))
                     else:
                         robot.moveToPoint(left_target)
 
                 else:
-                    #print("caso 2,3: pelota a la derecha del margen del área")
                     if robot.getPosition().dist(right_target) < 0.01:
                         robot.lookAtAngle(degrees(90))
                     else:
